@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function useFetch(url,param) {
+function usePost(url,param,token,_body,_dependencies) {
    const [results, setResults] = useState({});
    const [isLoading, setIsLoading] = useState(false);
 
@@ -13,30 +13,32 @@ function useFetch(url,param) {
       setIsLoading(false);
    };
 
-   const fetchData = async () => {
+
+   const postData = async () => {
       setIsLoading(true);
       try {
-         const response = await fetch(`http://localhost:3001/api/movies/${url}?${param}`,{
-            method: 'GET',
+        const response = await axios.post(
+          `http://localhost:3001/api/movies/${url}?${param}`,
+          {_body},
+          {
             headers: {
-               Authorization: 'Bearer RYoOcWM4JW',
-               'Content-Type': 'application/json'
-            }
-         });
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         handleResponse(response);
-
       } catch (error) {
-         console.log(error);
-         setIsLoading(false);
+        console.log(error);
+        setIsLoading(false);
       }
-   };
+   }
   
    useEffect(() => {
-      fetchData();
+    postData();
       // eslint-disable-next-line
-   }, [url,param]);
+   }, [url,token,_body,_dependencies]);
 
    return { results, isLoading };
 }
 
-export default useFetch;
+export default usePost;

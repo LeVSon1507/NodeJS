@@ -8,7 +8,6 @@ import ResultList from '../../components/ResultList/ResultList';
 const Search = () => {
    const [searchValue, setSearchValue] = useState('');
    const [isSearch, setIsSearch] = useState(false);
-   const url = `/search/movie?api_key=${API_KEY}&language=en&query=${searchValue}`;
    const handleSearchValue = e => {
       setSearchValue(e.target.value);
    };
@@ -31,7 +30,7 @@ const Search = () => {
             handleReset={handleReset}
          />
          <h2>Search Result</h2>
-         <ResultList url={url} isSearch={isSearch} />
+         <ResultList  isSearch={isSearch} searchValue={searchValue}/>
       </div>
    );
 };

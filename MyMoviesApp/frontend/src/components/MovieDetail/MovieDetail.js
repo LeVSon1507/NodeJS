@@ -3,10 +3,9 @@ import moment from "moment";
 import YouTube from "react-youtube";
 import "./MovieDetail.css";
 import axios from "axios";
+import usePost from "../../customHooks/usePost";
 
 function MovieDetail({ movieData, isShowMovieDetail, isBannerList }) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [results, setResults] = React.useState({});
   const {
     id,
     title,
@@ -17,37 +16,14 @@ function MovieDetail({ movieData, isShowMovieDetail, isBannerList }) {
     poster_path,
     name,
   } = movieData;
-  useEffect(() => {
-    const useFetchTrailerMovieData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/api/movies/video",
-          { film_id: id },
-          {
-            headers: {
-              Authorization: "Bearer RYoOcWM4JW",
-            },
-          }
-        );
-        if (response.status === 200) {
-          const data = response.data;
-          setResults(data);
-        }
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false);
-      }
-    };
-    useFetchTrailerMovieData();
-  }, [id]);
+  const { results, isLoading } = usePost(
+    "video",
+    "RYoOcWM4JW",
+    { film_id: id },
+    id
+  );
 
   const trailerMovie = results?.results;
-  console.log(
-    "🚀 ~ file: MovieDetail.js:47 ~ MovieDetail ~ trailerMovie:",
-    trailerMovie
-  );
 
   const opts = {
     height: "400",
