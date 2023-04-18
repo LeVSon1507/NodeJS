@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useFetch(url,param,_body,_method) {
+function useFetch(url,param,_method) {
    const [results, setResults] = useState({});
    const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +32,7 @@ function useFetch(url,param,_body,_method) {
    useEffect(() => {
       fetchData();
       // eslint-disable-next-line
-   }, [url,param,_body,_method]);
+   }, [url,param]);
 
    const reLoad = async () => {
       setIsLoading(true);
