@@ -105,11 +105,19 @@ function getMovieTrailer(req: Request, res: Response, next: NextFunction): void 
           res.status(404).json({ message: 'No trailer found for this movie' });
           return;
        }
- 
-       const latestTrailer = trailers.sort(
-          (a: Video, b: Video) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
-       )[0];
- 
+       //ưu tiên trailer hơn
+         trailers.sort((a: Video, b: Video) => {
+         if (a.type === 'Trailer' && b.type === 'Teaser') {
+           return -1;
+         } else if (a.type === 'Teaser' && b.type === 'Trailer') {
+           return 1;
+         } else {
+           return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+         }
+       })[0];
+
+       const latestTrailer = trailers[0];
+
        res.status(200).json({ results: latestTrailer });
     } catch (error) {
        next(error);
