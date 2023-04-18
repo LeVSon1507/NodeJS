@@ -1,35 +1,135 @@
-import React from "react";
-import './SearchForm.css'
+import React, { useCallback, useState } from "react";
+import "./SearchForm.css";
+import Select from "react-select";
 
-function SearchForm({ searchValue, handleSearchValue, handleSearch, handleReset }) {
+function SearchForm({ searchValue, setSearchValue, setIsSearch }) {
+  const [genre, setGenre] = useState("");
+  const [mediaType, setMediaType] = useState("");
+  const [year, setYear] = useState("");
+  const [language, setLanguage] = useState("");
 
-    return (
-        <div className="searchForm">
-            <div className="inputGr">
-                <input type="text" className="searchInput" onChange={handleSearchValue} value={searchValue} />
-                <svg
-                    className='svg-inline--fa fa-search fa-w-16'
-                    fill='#ccc'
-                    aria-hidden='true'
-                    data-prefix='fas'
-                    data-icon='search'
-                    width={200}
-                    height={200}
-                    role='img'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 512 512'
-                    onClick={handleSearch}
-                >
-                    <path d='M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z'></path>
-                </svg>
-            </div>
-            <div className="line"></div>
-            <div className="btnSearchGr">
-                <button className="resetBtn" onClick={handleReset}>RESET</button>
-                <button className="searchBtn" onClick={handleSearch} >SEARCH</button>
-            </div>
-        </div>
-    );
+  const handleSearchValue = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleGenreChange = (selectedOption) => {
+    setGenre(selectedOption?.value || "");
+  };
+
+  const handleMediaTypeChange = (selectedOption) => {
+    setMediaType(selectedOption?.value || "");
+  };
+
+  const handleLanguageChange = (selectedOption) => {
+    setLanguage(selectedOption?.value || "");
+  };
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+  };
+
+  const handleSearch = useCallback(() => {
+    setIsSearch(true);
+    setBodySearch({
+      keyword: searchValue,
+      genre: genre,
+      mediaType: mediaType,
+      language: "",
+      year: year,
+    });
+  }, []);
+
+  const handleReset = () => {
+    setIsSearch(false);
+    setSearchValue("");
+    setGenre("");
+    setMediaType("");
+    setYear("");
+  };
+
+  const mediaTypeOptions = [
+    { value: "", label: "Select a media type" },
+    { value: "all", label: "All" },
+    { value: "movie", label: "Movie" },
+    { value: "tv", label: "TV" },
+    { value: "person", label: "Person" },
+  ];
+
+  const optionsGenre = [
+    { value: "", label: "Select a genre" },
+    { value: "Action", label: "Action" },
+    { value: "Comedy", label: "Comedy" },
+    { value: "Drama", label: "Drama" },
+    { value: "Horror", label: "Horror" },
+    { value: "Romance", label: "Romance" },
+    { value: "Sci-Fi", label: "Sci-Fi" },
+    { value: "Thriller", label: "Thriller" },
+  ];
+
+  const optionsLanguage = [
+    { value: "", label: "Select a language" },
+    { value: "en", label: "English" },
+    { value: "ja", label: "Japanese" },
+    { value: "ko", label: "Korean" },
+  ];
+  return (
+    <div className="searchForm">
+      <div className="inputGr">
+        <input
+          type="text"
+          className="searchInput"
+          onChange={handleSearchValue}
+          value={searchValue}
+          placeholder="Search By Keyword"
+        />
+      </div>
+      <div className="dropdownGr">
+        {/* Dropdown cho trường genre */}
+        <Select
+          className="dropdown"
+          options={optionsGenre}
+          onChange={handleGenreChange}
+          value={optionsGenre.find((option) => option.value === genre)}
+        />
+      </div>
+      <div className="dropdownGr">
+        {/* Dropdown cho trường media type */}
+        <Select
+          className="dropdown"
+          options={mediaTypeOptions}
+          onChange={handleMediaTypeChange}
+          value={mediaTypeOptions.find((option) => option.value === mediaType)}
+        />
+      </div>
+      <div className="dropdownGr">
+        {/* Dropdown cho trường language */}
+        <Select
+          className="dropdown"
+          options={optionsLanguage}
+          onChange={handleLanguageChange}
+          value={optionsLanguage.find((option) => option.value === language)}
+        />
+      </div>
+      <div className="dropdownGr">
+        {/* Trường input cho năm */}
+        <input
+          type="number"
+          className="searchInput"
+          onChange={handleYearChange}
+          value={year}
+          placeholder="Search By Year"
+        />
+      </div>
+      <div className="btnSearchGr">
+        <button className="resetBtn" onClick={handleReset}>
+          RESET
+        </button>
+        <button className="searchBtn" onClick={handleSearch}>
+          SEARCH
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default SearchForm;

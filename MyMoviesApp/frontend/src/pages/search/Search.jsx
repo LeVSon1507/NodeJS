@@ -8,26 +8,14 @@ import ResultList from '../../components/ResultList/ResultList';
 const Search = () => {
    const [searchValue, setSearchValue] = useState('');
    const [isSearch, setIsSearch] = useState(false);
-   const handleSearchValue = e => {
-      setSearchValue(e.target.value);
-   };
-   const handleSearch = () => {
-      setIsSearch(true);
-   };
-   const handleReset = () => {
-      setIsSearch(false);
-      setSearchValue('');
-   };
-
+   
    return (
       <div className='searchContainer'>
          <NavBar />
          <SearchForm
             searchValue={searchValue}
             setSearchValue={setSearchValue}
-            handleSearchValue={handleSearchValue}
-            handleSearch={handleSearch}
-            handleReset={handleReset}
+            setIsSearch={setIsSearch}
          />
          <h2>Search Result</h2>
          <ResultList  isSearch={isSearch} searchValue={searchValue}/>
