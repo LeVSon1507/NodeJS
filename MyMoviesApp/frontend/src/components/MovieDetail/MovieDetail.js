@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import YouTube from "react-youtube";
 import "./MovieDetail.css";
 import axios from "axios";
-import usePost from "../../customHooks/usePost";
+// import usePost from "../../customHooks/usePost";
 
 function MovieDetail({ movieData, isShowMovieDetail, isBannerList }) {
   const {
@@ -16,14 +16,40 @@ function MovieDetail({ movieData, isShowMovieDetail, isBannerList }) {
     poster_path,
     name,
   } = movieData;
-  const { results, isLoading } = usePost(
-    "video",
-    "RYoOcWM4JW",
-    { film_id: id },
-    id
-  );
+  // const { results, isLoading } = usePost(
+  //   "video",
+  //   "RYoOcWM4JW",
+  //   { film_id: id },
+  //   id
+  // ); 
+  const [results, setResults] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    const postData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await axios.post(
+          `http://localhost:3001/api/movies/video`,
+          { film_id: id },
+          {
+            headers: {
+              Authorization: `Bearer RYoOcWM4JW`,
+            },
+          }
+        );
+        if (data.status === 200) {
+          setResults(data.data.results);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    }
+    postData()
+  }, [id, isShowMovieDetail]);
 
-  const trailerMovie = results?.results;
+  const trailerMovie = results;;
 
   const opts = {
     height: "400",

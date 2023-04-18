@@ -18,7 +18,7 @@ function MovieList({ apiEndpoint, isOriginal, genre }) {
   const [isShowMovieDetail, setIsShowMovieDetail] = useState(false);
   const [isBannerList, setIsBannerList] = useState(false);
   const [movie, setMovie] = useState({});
-  // let movieId;
+
   const settings = {
     dots: false,
     infinite: true,

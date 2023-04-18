@@ -20,7 +20,7 @@ function getTrendingMovies(req: Request, res: Response, next: NextFunction): voi
       const totalMovies = movieList.length;
       const totalPages = getTotalPages(totalMovies);
 
-      res.json({
+      res.status(200).json({
          results: movies,
          page: currentPage,
          total_pages: totalPages,
@@ -42,7 +42,7 @@ function getTopRateMovies(req: Request, res: Response, next: NextFunction): void
       const totalMovies = movieList.length;
       const totalPages = getTotalPages(totalMovies);
 
-      res.json({
+      res.status(200).json({
          results: movies,
          page: currentPage,
          total_pages: totalPages,
@@ -76,7 +76,7 @@ function getGenreMovies(req: Request, res: Response, next: NextFunction): void {
       const totalMovies = movieList.length;
       const totalPages = getTotalPages(totalMovies);
 
-      res.json({
+      res.status(200).json({
          results: movies,
          page: currentPage,
          total_pages: totalPages,
@@ -110,7 +110,7 @@ function getMovieTrailer(req: Request, res: Response, next: NextFunction): void 
           (a: Video, b: Video) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
        )[0];
  
-       res.json({ results: latestTrailer });
+       res.status(200).json({ results: latestTrailer });
     } catch (error) {
        next(error);
     }
@@ -210,7 +210,7 @@ function searchMovies(req: Request, res: Response, next: NextFunction): void {
        const totalMovies = filteredMovies.length;
        const totalPages = getTotalPages(totalMovies);
  
-       res.json({
+       res.status(200).json({
           results: filteredMovies.slice(offset, offset + limit),
           page: currentPage,
           total_pages: totalPages,

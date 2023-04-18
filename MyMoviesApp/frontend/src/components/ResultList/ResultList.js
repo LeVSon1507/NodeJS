@@ -1,26 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MovieDetail from "../MovieDetail/MovieDetail";
 import "./ResultList.css";
 import usePost from "../../customHooks/usePost";
+import axios from "axios";
 
-function ResultList({ isSearch, searchValue }) {
-  //   const url = `/search/movie?api_key=${API_KEY}&language=en&query=${searchValue}`;
+function ResultList({ isSearch, bodySearch ,isShowMovieDetail, setIsShowMovieDetail}) {
   const [page, setPage] = useState(1);
-  const { results, isLoading } = usePost(
-    "search",
-    `page=${page}`,
-    "RYoOcWM4JW",
-    {
-      // searchValue: searchValue,
-      keyword: searchValue,
-      genre: "",
-      mediaType: "",
-      language: "",
-      year: "",
-    }
-  );
-  const [isShowMovieDetail, setIsShowMovieDetail] = useState(false);
+  const [results, setResults] = useState([]);
+  console.log("🚀 ~ file: ResultList.js:10 ~ ResultList ~ results:", results)
+  const [isLoading, setIsLoading] = useState(false);
   const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    const postData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await axios.post(
+          `http://localhost:3001/api/movies/search`,
+          { ...bodySearch},
+          {
+            headers: {
+              Authorization: `Bearer RYoOcWM4JW`,
+            },
+          }
+        );
+        if (data.status === 200) {
+          setResults(data.data.results);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    }
+    postData()
+  }, [bodySearch]);
 
   const handleShowDetails = (movie) => {
     setIsShowMovieDetail(!isShowMovieDetail);
@@ -40,7 +54,7 @@ function ResultList({ isSearch, searchValue }) {
       ) : (
         <div className="resultContainer">
           {isSearch &&
-            results?.results?.map((movie) => {
+            results?.map((movie) => {
               return (
                 <>
                   <div className="resultItem" key={movie.name}>

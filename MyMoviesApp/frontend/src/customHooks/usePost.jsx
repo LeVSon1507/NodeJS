@@ -5,19 +5,10 @@ function usePost(url,param,token,_body,_dependencies) {
    const [results, setResults] = useState({});
    const [isLoading, setIsLoading] = useState(false);
 
-   const handleResponse = async response => {
-      if (response.status === 200) {
-         const data = await response.json();
-         setResults(data);
-      }
-      setIsLoading(false);
-   };
-
-
    const postData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.post(
+        const data = await axios.post(
           `http://localhost:3001/api/movies/${url}?${param}`,
           {_body},
           {
@@ -26,7 +17,10 @@ function usePost(url,param,token,_body,_dependencies) {
             },
           }
         );
-        handleResponse(response);
+        if (data.status === 200) {
+         setResults(data.data.results);
+      }
+      setIsLoading(false);
       } catch (error) {
         console.log(error);
         setIsLoading(false);

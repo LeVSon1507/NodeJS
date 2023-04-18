@@ -2,11 +2,12 @@ import React, { useCallback, useState } from "react";
 import "./SearchForm.css";
 import Select from "react-select";
 
-function SearchForm({ searchValue, setSearchValue, setIsSearch }) {
+function SearchForm({  setIsSearch,setBodySearch,setIsShowMovieDetail }) {
   const [genre, setGenre] = useState("");
   const [mediaType, setMediaType] = useState("");
   const [year, setYear] = useState("");
   const [language, setLanguage] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   const handleSearchValue = (e) => {
     setSearchValue(e.target.value);
@@ -28,16 +29,16 @@ function SearchForm({ searchValue, setSearchValue, setIsSearch }) {
     setYear(e.target.value);
   };
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = () => {
     setIsSearch(true);
     setBodySearch({
       keyword: searchValue,
       genre: genre,
       mediaType: mediaType,
-      language: "",
+      language: language,
       year: year,
     });
-  }, []);
+  };
 
   const handleReset = () => {
     setIsSearch(false);
@@ -45,6 +46,7 @@ function SearchForm({ searchValue, setSearchValue, setIsSearch }) {
     setGenre("");
     setMediaType("");
     setYear("");
+    setIsShowMovieDetail(false)
   };
 
   const mediaTypeOptions = [
