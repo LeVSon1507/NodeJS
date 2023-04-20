@@ -4,8 +4,33 @@
 .navbarHeader {
    display: flex;
    justify-content: space-between;
+   align-items: center;
    padding: 1rem 1rem;
    background-color: #003580;
+}
+.userEmail{
+   color: white;
+   font-size: 1.2rem;
+   font-weight: 700;
+}
+.grBtnEmail{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 45%;
+}
+.grBtn{
+   width: 20%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+
+}
+.userEmail{
+   color: white;
+   font-size: 1.2rem;
+   font-weight: 700;
+   margin-right: 1rem;
 }
 
 .navbarText {
@@ -22,7 +47,8 @@
    background-color: white;
    font-weight: 700;
    padding: 0.4rem 1rem;
-   margin-left: 1rem;
+   /* padding-left: 1rem; */
+   /* margin-left: 4%; */
    border: 1px solid #003580;
 }
 .navbarBtn:hover {
@@ -53,8 +79,7 @@
    cursor: pointer;
    color: white;
 }
-.icon {
-}
+
 .iconItem.active {
    border: 1px solid white;
    padding: 10px;

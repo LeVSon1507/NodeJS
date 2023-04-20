@@ -1,13 +1,16 @@
 import React from "react";
 import "./Login.css";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+
 function Login() {
-  const [userName, setUserName] = React.useState("");
+  const navigate = useNavigate();
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "userName") {
-      setUserName(value);
+    if (name === "email") {
+      setEmail(value);
     } else if (name === "password") {
       setPassword(value);
     }
@@ -16,12 +19,19 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/user/login",
+        "http://localhost:5000/api/login",
         {
-          userName: userName,
+          email: email,
           password: password,
         }
       );
+      if (response.status === 200) {
+          alert("Login successful")
+          localStorage.setItem("userEmail", response.data._doc.email);
+          localStorage.setItem("token", response.data.token);
+          navigate('/')
+         
+        }
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -36,13 +46,13 @@ function Login() {
           </div>
           <div className="form-group-rgt">
             <input
-              name="userName"
+              name="email"
               type="text"
               onChange={handleChange}
               className="form-control-rgt"
-              id="name"
-              value={userName}
-              placeholder="Enter name"
+              id="email"
+              value={email}
+              placeholder="Your Email"
             />
           </div>
           <div className="form-group-rgt">

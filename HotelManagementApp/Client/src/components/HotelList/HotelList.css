@@ -9,13 +9,15 @@
 }
 
 .hotelListWrap img {
-   width: 13rem;
+   width: 18rem;
    object-fit: cover;
    height: 15rem;
 }
 
 .hotelListWrap a {
-   padding: 5rem 0;
+   display: flex;
+   flex-direction: column;
+   /* padding: 5rem 0; */
 }
 .hotelListWrap > p {
    padding: 0.5rem 0;

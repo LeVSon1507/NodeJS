@@ -40,6 +40,8 @@ const iconList = [
 
 
 const Navbar = ({isSmall}) => {
+   const token = localStorage.getItem('token');
+   const userEmail = localStorage.getItem('userEmail');
    const navigate = useNavigate();
    const renderIconList = listIcon => {
       return listIcon.map(({ icon, type, active }) => (
@@ -61,8 +63,19 @@ const Navbar = ({isSmall}) => {
    const goToLoginPage = () => {
       navigate('/login')
    }
+
+   const goToTransactions = () => {
+      navigate('/transactions')
+   }
+
+   const handleLogout = () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userEmail');
+      navigate('/login')
+   }
    const isShowIconList = !isSmall ? true: false;
    
+
    return (
       <div className='navbarContainer'>
          <div className='navbarWrap'>
@@ -70,10 +83,20 @@ const Navbar = ({isSmall}) => {
                <p className='navbarText' onClick={handleClickNavbarTitle}>
                   Booking Website
                </p>
-               <div>
+             {token ?
+              <div className='grBtnEmail'>
+                  <p className='userEmail'>{userEmail}</p>
+                  <button className='navbarBtn' onClick={goToTransactions}>Transactions</button>
+                  <button className='navbarBtn' onClick={handleLogout}>Logout</button>
+              </div>
+
+               : 
+               <div className='grBtn'>
                   <button className='navbarBtn' onClick={goToRegisterPage}>Register</button>
                   <button className='navbarBtn' onClick={goToLoginPage}>Login</button>
                </div>
+               }  
+              
             </div>
             {/* menu icon */}
          {isShowIconList && <div className='navbarIconListContainer'>{renderIconList(iconList)}</div>}  

@@ -8,6 +8,7 @@ const app: Application = express();
 
 //Connect MongoDB
 import connectDB from "./db/connectDB";
+import hotelRouter from "./routes/hotelRouter";
 connectDB();
 
 // Middleware
@@ -18,6 +19,7 @@ app.use(express.json() as express.RequestHandler);
 
 // Routes
 app.use("/api", userRouter);
+app.use("/api", hotelRouter);
 
 // 404 Not Found
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -6,7 +6,7 @@ const mongoOptions = {
 } as ConnectOptions;
 
 const connectDB = async () => {
-  const dbUri = "mongodb://localhost:27017/HotelDB" as string;
+  const dbUri = "mongodb://localhost:27017/HotelAppDB" as string;
   try {
     await mongoose.connect(dbUri, mongoOptions);
     console.log("MongoDB connected!");
