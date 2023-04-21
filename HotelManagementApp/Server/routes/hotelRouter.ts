@@ -1,7 +1,7 @@
 import express, { NextFunction, Response, Request } from 'express';
 import { Hotel } from '../models/Hotel';
 import { Transaction } from '../models/Transaction';
-import { Room } from '../models/Room';
+import { IRoom, Room } from '../models/Room';
 const hotelRouter = express.Router();
 
 hotelRouter.get('/hotel', async (req: Request, res: Response, next: NextFunction) => {
@@ -47,16 +47,33 @@ hotelRouter.get('/hotel/getCount', async (req: Request, res: Response, next: Nex
       next(error);
    }
 });
-
-//--search hotel---
-hotelRouter.get('/hotel/search', async (req: Request, res: Response, next: NextFunction) => {
+hotelRouter.post('/hotel/search', async (req: Request, res: Response, next: NextFunction) => {
    try {
-      const { city, checkInDate, checkOutDate, maxRooms, maxPeople } = req.body;
-      //ds A
-      const hotels = await Hotel.find({ city });
-      // Lọc danh sách phòng theo tiêu chí số lượng người
-      
-      res.status(200).json();
+      const { city, dateStart, dateEnd, numPeople, numRooms } = req.body;
+      let hotelFilter = await Hotel.find({ city }).populate({
+         path: 'rooms',
+         match: {
+            maxPeople: { $gte: numPeople },
+            roomNumbers: { $size: numRooms },
+         },
+      });
+      if (typeof dateStart === 'string' && typeof dateEnd === 'string') {
+         const hotelIds = hotelFilter
+                  .map((hotel) => hotel?._id)
+                  .filter((id) => id != null);
+         hotelFilter = hotelFilter.filter((hotel) =>
+            hotel.rooms.map((room:IRoom) =>
+               hotelIds.includes(room._id) &&
+               !Transaction.exists({
+                  hotel: hotel._id,
+                  room: room._id,
+                  dateStart: { $lt: new Date(dateEnd) },
+                  dateEnd: { $gt: new Date(dateStart) },
+               })
+            )
+         );
+      }
+      res.status(200).json({ hotelFilter });
    } catch (error) {
       next(error);
    }
