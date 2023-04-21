@@ -1,13 +1,24 @@
-const express = require('express');
+const express = require("express");
 const userRouter = express.Router();
-userRouter.post('/users/addUser',async(req,res,next)=>{
-    const userArray = []
-    try {
-    const newUser = req.body
-    userArray.push(newUser)
-        res.status(200).json({results:userArray});
-    } catch (error) {
-        next(error)
-    }    
-})
+
+let userArray = [];
+
+userRouter.post("/users/addUser", async (req, res, next) => {
+  try {
+    const newUser = req.body;
+    userArray.push(newUser);
+    res.status(200).json({ results: userArray });
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/users", async (req, res, next) => {
+  try {
+    res.status(200).json({ results: userArray });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = userRouter;
