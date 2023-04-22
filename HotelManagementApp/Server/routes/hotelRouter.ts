@@ -47,6 +47,7 @@ hotelRouter.get('/hotel/getCount', async (req: Request, res: Response, next: Nex
       next(error);
    }
 });
+
 hotelRouter.post('/hotel/search', async (req: Request, res: Response, next: NextFunction) => {
    try {
       const { city, dateStart, dateEnd, numPeople, numRooms } = req.body;
@@ -78,5 +79,17 @@ hotelRouter.post('/hotel/search', async (req: Request, res: Response, next: Next
       next(error);
    }
 });
+
+//-----------------Get hotel detail----------------
+hotelRouter.get('/hotel/getHotelDetail', async (req: Request, res: Response, next: NextFunction) => {
+   try {
+      const { id } = req.query;
+      const hotelDetail = await Hotel.findById(id)
+      res.status(200).json({ results: hotelDetail });
+   } catch (error) {
+      next(error);
+   }
+});
+
 
 export default hotelRouter;
