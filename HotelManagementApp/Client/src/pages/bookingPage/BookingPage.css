@@ -1,0 +1,52 @@
+.wrap-container{
+    width: 80%;
+    margin: 0 auto;
+    
+}
+
+.nameBookform{
+    font-weight: bold;
+   margin: 10px 0;
+
+}
+.hotelDetailsPriceB{
+    flex: 1;
+   background-color: #ebf3ff;
+   padding: 20px;
+   display: flex;
+   flex-direction: column;
+   margin: 10px 0;
+
+}
+
+.hotelDetailsPriceB > button {
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+ }
+
+ .tablePick h3{
+    font-weight: bold;
+ }
+
+ .form-group{
+    display: flex;
+    flex-direction: column;
+ }
+ 
+ .form-group >input{
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+ }
+
+ .datesPicker{
+    display: flex;
+    flex-direction: column;
+ }

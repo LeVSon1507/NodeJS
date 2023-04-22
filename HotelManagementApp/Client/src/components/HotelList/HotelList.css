@@ -43,3 +43,8 @@
 .type {
    font-size: 14px;
 }
+.name{
+   color: blue;
+   text-decoration: underline;
+   cursor: pointer;
+}

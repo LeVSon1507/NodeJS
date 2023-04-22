@@ -1,24 +1,45 @@
 import React from 'react';
-
+import axios from 'axios';
 // internal
 import './Detail.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Subscribe from '../../components/Subscribe/Subscribe';
 import Footer from '../../components/Footer/Footer';
-import { dataDetail } from './dataDetail';
-
 // icon
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Detail() {
-   const handleClickBookNow = () => {};
+   const navigate = useNavigate();
+   const hotelId = useParams().hotelID;
+   const handleClickBookNow = () => {
+      navigate(`/booking/${hotelId}`,{state: {hotelId: hotelId}})
+   };
    const handleOpen = () => {};
-   let loading = false;
+   const [dataDetail, setDataDetail] = React.useState({})
+   const [isLoading, setIsLoading] = React.useState(false);
+   React.useEffect(() => {
+      setIsLoading(true);
+     try {
+      const fetchData = async () => {
+         const result = await axios.get(`http://localhost:5000/api/hotel/getHotelDetail?id=${hotelId}`);
+         if (result.status === 200) {
+         setDataDetail(result.data.results);
+         }
+      };
+     fetchData();
+     setIsLoading(false);
+     } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+     }
+   }, [hotelId]);
+
    return (
       <div>
          <Navbar />
-         {loading ? (
+         {isLoading ? (
             <h1>Loading...</h1>
          ) : (
             <div className='hotelContainer'>
@@ -31,10 +52,12 @@ function Detail() {
                      <FontAwesomeIcon icon={faLocationDot} />
                      <span>{dataDetail.address}</span>
                   </div>
-                  <span className='hotelDistance'>{dataDetail.distance}</span>
-                  <span className='hotelPriceHighlight'>{dataDetail.price}</span>
+                  <span className='hotelDistance'>Excellent location — {dataDetail.distance}m from center</span>
+                  <span className='hotelPriceHighlight'>
+                  Book a stay over ${dataDetail.cheapestPrice} at this property and get a free airport taxi
+                  </span>
                   <div className='hotelImages'>
-                     {dataDetail.photos.map((photo, index) => (
+                     {dataDetail.photos?.map((photo, index) => (
                         <div className='hotelImgWrapper' key={index}>
                            <img
                               onClick={() => handleOpen(index)}
@@ -48,7 +71,7 @@ function Detail() {
                   <div className='hotelDetails'>
                      <div className='hotelDetailsTexts'>
                         <h1 className='hotelTitle'>{dataDetail.title}</h1>
-                        <p className='hotelDesc'>{dataDetail.description}</p>
+                        <p className='hotelDesc'>{dataDetail.desc}</p>
                      </div>
                      <div className='hotelDetailsPrice'>
                         <h1>Perfect for a 9-night stay!</h1>

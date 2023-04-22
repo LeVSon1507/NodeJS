@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBed, faCalendar,  faPerson } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
-   const navigate = useNavigate()  ;
+   const navigate = useNavigate();
    const [openDate, setOpenDate] = useState(false);
    const [location, setLocation] = useState('');
    const [dates, setDates] = useState([
@@ -23,7 +23,6 @@ function Header() {
          key: 'selection',
       },
    ]);
-   console.log("🚀 ~ file: Header.jsx:26 ~ Header ~ dates:", dates)
    const [options, setOptions] = useState({
     adult: 1,
     children: 0,
@@ -53,7 +52,6 @@ function Header() {
          numPeople: options.adult + options.children,
          numRoom: options.room,
       }
-      console.log("🚀 ~ file: Header.jsx:55 ~ handleBtnSearch ~ data:", dataSearch)
       localStorage.setItem('', JSON.stringify(dates));
       // navigate('./Search');
    };
