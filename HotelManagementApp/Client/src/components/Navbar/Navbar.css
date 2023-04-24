@@ -65,16 +65,16 @@
 .navbarIconListContainer {
    background-color: #003580;
    display: flex;
+   align-items: center;
+
 }
 .iconItemWrap {
    display: flex;
-   flex-direction: row;
    margin-bottom: 1rem;
    padding: 1rem;
 }
 .iconItem {
    display: flex;
-   align-items: center;
    gap: 10px;
    cursor: pointer;
    color: white;
@@ -83,6 +83,9 @@
 .iconItem.active {
    border: 1px solid white;
    padding: 10px;
+   padding-bottom: 0;
    border-radius: 20px;
+}
+.iconItem.active:hover{
    transform: scale(1.05);
 }
