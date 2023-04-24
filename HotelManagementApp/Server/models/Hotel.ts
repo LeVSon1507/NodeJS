@@ -11,8 +11,7 @@ interface IHotel extends Document {
    desc: string;
    rating: number;
    featured: boolean;
-  //  rooms: [string];
-   rooms: IRoom["_id"];
+   rooms: IRoom['_id'][];
 }
 
 const hotelSchema = new mongoose.Schema<IHotel>({
@@ -56,8 +55,13 @@ const hotelSchema = new mongoose.Schema<IHotel>({
    },
    rooms: [
       {
-         room: { type: mongoose.Types.ObjectId, ref: 'Room' },
-         quantity: { type: Number, required: true, default: 0 },
+         rooms: [mongoose.Schema.Types.ObjectId],
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'Room',
+      },
+      {
+         type: Number,
+         ref: 'Room',
       },
    ],
 });

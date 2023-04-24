@@ -55,41 +55,50 @@ hotelRouter.post('/hotel/search', async (req: Request, res: Response, next: Next
          path: 'rooms',
          match: {
             maxPeople: { $gte: numPeople },
-            roomNumbers: { $size: numRooms },
          },
       });
       if (typeof dateStart === 'string' && typeof dateEnd === 'string') {
-         const hotelIds = hotelFilter
-                  .map((hotel) => hotel?._id)
-                  .filter((id) => id != null);
-         hotelFilter = hotelFilter.filter((hotel) =>
-            hotel.rooms.map((room:IRoom) =>
-               hotelIds.includes(room._id) &&
-               !Transaction.exists({
-                  hotel: hotel._id,
-                  room: room._id,
-                  dateStart: { $lt: new Date(dateEnd) },
-                  dateEnd: { $gt: new Date(dateStart) },
-               })
+         const hotelIds = hotelFilter.map(hotel => hotel?._id).filter(id => id != null);
+         hotelFilter = hotelFilter.filter(hotel =>
+            hotel.rooms.map(
+               (room: IRoom) =>
+                  hotelIds.includes(room._id) &&
+                  !Transaction.exists({
+                     hotel: hotel._id,
+                     room: room._id,
+                     dateStart: { $lt: new Date(dateEnd) },
+                     dateEnd: { $gt: new Date(dateStart) },
+                  })
             )
          );
       }
-      res.status(200).json({ results:hotelFilter });
+      res.status(200).json({ results: hotelFilter });
    } catch (error) {
       next(error);
    }
 });
 
 //-----------------Get hotel detail----------------
-hotelRouter.get('/hotel/getHotelDetail', async (req: Request, res: Response, next: NextFunction) => {
-   try {
-      const { id } = req.query;
-      const hotelDetail = await Hotel.findById(id)
-      res.status(200).json({ results: hotelDetail });
-   } catch (error) {
-      next(error);
-   }
-});
+hotelRouter.get(
+   '/hotel/getHotelDetail',
+   async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const { id } = req.query;
+         const hotelDetail = await Hotel.findById(id);
+         // const roomsList = await hotelDetail?.rooms?.map((room:IRoom) => {
+         //    return  Room.findById(room._id)
+         // })
+         const roomsList = await Room.find({ _id: { $in: hotelDetail?.rooms } }).exec();
+         // .find() trả về một query, chứa tất cả các tài liệu trong bảng Room.
 
+         //$in sẽ trả về tất cả các tài liệu trong bảng Room có trường _id nằm trong danh sách các giá trị _id của các phần tử trong mảng hotelDetail.rooms.
+
+         //.exec() được sử dụng để thực thi query và trả về một promise, chứa danh sách các phòng của khách sạn.
+         res.status(200).json({  results: hotelDetail, roomsList:roomsList});
+      } catch (error) {
+         next(error);
+      }
+   }
+);
 
 export default hotelRouter;

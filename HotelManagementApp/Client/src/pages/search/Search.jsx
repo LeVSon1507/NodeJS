@@ -37,7 +37,7 @@ const Search = () => {
          console.log(error);
          setIsLoading(false);
       }
-   }, []);
+   }, [searchData]);
 
    const handleClick = () => {};
    const handleBtnSeeDetail = (_id) => {
