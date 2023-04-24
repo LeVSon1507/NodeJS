@@ -1,59 +1,55 @@
-// external
 import React, { memo, useEffect, useState } from 'react';
 import { format } from 'date-fns';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
 import { useNavigate } from 'react-router-dom';
-// internal
+import { useSelector, useDispatch } from 'react-redux';
 import './Header.css';
-
-// icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBed, faCalendar, faPerson } from '@fortawesome/free-solid-svg-icons';
+import { setSearchData } from '../../redux/reducer';
 
 function Header() {
-   const {
-      city: locationInit,
-      // dateStart: dateStartInit,
-      // dateEnd: dateEndInit,
-      numAdult,
-      numChildren,
-      numRoom: numRoomInit,
-   } = JSON.parse(localStorage.getItem('searchData')) || {};
-   // console.log("🚀 ~ file: Header.jsx:24 ~ Header ~ dateStartInit:", dateStartInit)
-
+   const dispatch = useDispatch();
    const navigate = useNavigate();
+   const searchData = useSelector(state => state.searchReducer.searchData);
    const [openDate, setOpenDate] = useState(false);
-   const [location, setLocation] = useState(locationInit);
-   const dateStartInit = localStorage.getItem('searchData')
-      ? JSON.parse(localStorage.getItem('searchData')).dateStart
-      : new Date();
-   const dateEndInit = localStorage.getItem('searchData')
-      ? JSON.parse(localStorage.getItem('searchData')).dateEnd
-      : new Date();
-
-   const defaultDates = {
-      startDate:
-         dateStartInit instanceof Date && !isNaN(dateStartInit) ? dateStartInit : new Date(),
-      endDate: dateEndInit instanceof Date && !isNaN(dateEndInit) ? dateEndInit : new Date(),
-      key: 'selection',
-   };
-
-   const [dates, setDates] = useState([defaultDates]);
+   const [location, setLocation] = useState(searchData.city);
+   const [dates, setDates] = useState([
+      {
+         startDate: searchData.dateStart || new Date(),
+         endDate: searchData.dateEnd || new Date(),
+         key: 'selection',
+      },
+   ]);
    const [options, setOptions] = useState({
-      adult: numAdult,
-      children: numChildren,
-      room: numRoomInit,
+      adult: searchData.numAdult || 1,
+      children: searchData.numChildren || 0,
+      room: searchData.numRoom || 1,
    });
    const [openOptions, setOpenOptions] = useState(false);
+
    useEffect(() => {
-      setLocation(locationInit);
-   }, [locationInit]);
+      setLocation(searchData.city);
+      setOptions({
+         adult: searchData.numAdult || 1,
+         children: searchData.numChildren || 0,
+         room: searchData.numRoom || 1,
+      });
+      setDates([
+         {
+            startDate: searchData.dateStart || new Date(),
+            endDate: searchData.dateEnd || new Date(),
+            key: 'selection',
+         },
+      ]);
+   }, [searchData]);
 
    const handleChange = e => {
       setLocation(e.target.value);
    };
+
    const handleOption = (name, operation) => {
       setOptions(prev => ({
          ...prev,
@@ -64,6 +60,7 @@ function Header() {
    const handleOpenModal = () => {
       setOpenDate(!openDate);
    };
+
    const handleBtnSearch = () => {
       const { startDate, endDate } = dates[0];
       const isDateValid =
@@ -82,11 +79,16 @@ function Header() {
             numChildren: options.children,
             numRoom: options.room,
          };
-         localStorage.setItem('searchData', JSON.stringify(dataSearch));
-         navigate('./Search');
+         if (location && dataSearch) {
+            dispatch(setSearchData(dataSearch));
+            navigate('./Search');
+         } else if (!location) {
+            alert('Please enter your destination');
+         } else if (!dataSearch.dateEnd || !dataSearch.dateStart) {
+            alert('Please enter your date');
+         }
       }
    };
-
    return (
       <div className='headerContainer'>
          <div className='headerWrap'>

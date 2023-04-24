@@ -46,10 +46,13 @@ const Navbar = ({isSmall}) => {
    const renderIconList = listIcon => {
       return listIcon.map(({ icon, type, active }) => (
          <div className='iconItemWrap' key={type}>
-            <div className={`iconItem ${active && 'active'}`}>
+         <div className={`${active && 'active'}`}>
+         <div className={`iconItem`}>
                <FontAwesomeIcon icon={icon} className='icon' />
-               <p>{type}</p>
+               <p className='iconNavBar'>{type}</p>
             </div>
+         </div>
+           
          </div>
       ));
    };

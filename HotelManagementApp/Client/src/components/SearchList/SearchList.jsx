@@ -3,12 +3,12 @@ import './SearchList.css';
 const SearchList = ({ item, handleBtnSeeDetail }) => {
    return (
       <div className='searchItem'>
-         <img src={item.image_url} alt='images' className='siImg' />
+         <img src={item.photos[0]} alt={`${item.name} img`} className='siImg' />
          <div className='siDesc'>
             <h1 className='siTitle'>{item.name}</h1>
             <span className='siDistance'>{item.distance}m from center</span>
-            <span className='siTaxiOp'>{item.tag}</span>
-            <span className='siSubtitle'>{item.description}</span>
+            <span className='siTaxiOp'>{item.featured? 'Free airport taxi':''}</span>
+            <span className='siSubtitle'>{item.desc}</span>
             <span className='siFeatures'>{item.type}</span>
             <span className='siCancelOp'>Free cancellation </span>
             <span className='siCancelOpSubtitle'>
@@ -23,9 +23,9 @@ const SearchList = ({ item, handleBtnSeeDetail }) => {
                </div>
             )}
             <div className='siDetailTexts'>
-               <span className='siPrice'>${item.price}</span>
+               <span className='siPrice'>${item.cheapestPrice}</span>
                <span className='siTaxOp'>Includes taxes and fees</span>
-               <button className='siCheckButton' onClick={handleBtnSeeDetail}>
+               <button className='siCheckButton' onClick={()=>handleBtnSeeDetail(item._id)}>
                   See availability
                </button>
             </div>
