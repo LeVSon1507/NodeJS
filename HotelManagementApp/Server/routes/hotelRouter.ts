@@ -74,7 +74,7 @@ hotelRouter.post('/hotel/search', async (req: Request, res: Response, next: Next
             )
          );
       }
-      res.status(200).json({ hotelFilter });
+      res.status(200).json({ results:hotelFilter });
    } catch (error) {
       next(error);
    }
