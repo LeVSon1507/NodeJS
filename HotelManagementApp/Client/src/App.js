@@ -5,6 +5,7 @@ import Search from "./pages/search/Search";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import BookingPage from "./pages/bookingPage/BookingPage";
+import Transaction from "./pages/transaction/Transaction";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/detail/:hotelID" element={<Detail />} />
         <Route path="/booking/:hotelID" element={<BookingPage />} />
+        <Route path="/transactions" element={<Transaction />} />
+        <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>
   );

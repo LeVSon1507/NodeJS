@@ -1,0 +1,89 @@
+.wrapTable {
+   height: 100vh;
+   width: 70%;
+   margin: 0 auto;
+}
+
+
+.tableTrans{
+    margin: 3rem 0;
+}
+
+td,th,thead,tr{
+    border: 1px solid gray;
+}
+
+.id,.Hotel,.Date,.Price,.Room,.Status,.paymed{
+    border: 1px solid gray;
+    padding: 15px 0;
+    padding-left: 5px;
+    background-color: #32A4C1;
+    color: white;
+}
+
+.id{
+   min-width: 2rem;
+}
+.Hotel{
+   min-width: 20rem;
+}
+.Room{
+   min-width: 6rem;
+}
+.Date{
+    min-width: 15rem;
+}
+.Price{
+    min-width: 5rem;
+}
+.paymed{
+    min-width: 13rem;
+}
+.Status{
+    min-width: 6rem;
+}
+/*  */
+
+.idBody,.HotelBody,.DateBody,.PriceBody,.RoomBody,.StatusBody,.paymedBody{
+    border: 1px solid gray;
+    padding: 8px 0;
+    padding-left: 5px;
+    font-weight: 600;
+}
+.idBody{
+    min-width: 2rem;
+}
+.HotelBody{
+    min-width: 20rem;
+}
+.RoomBody{
+    min-width: 6rem;
+}
+.DateBody{
+    min-width: 15rem;
+}
+.PriceBody{
+    min-width: 5rem;;
+}
+.paymedBody{
+    min-width: 13rem;
+}
+.StatusBody{
+    min-width: 6rem;
+}
+.bookedStt{
+    padding: 5px 3px;
+    width: 4rem;
+    border-radius: 10px;
+    color: green;
+    background-color: #F69685;
+}
+
+
+.titleTrans{
+    font-weight: bold;
+}
+
+.isOdd{
+    background-color: #F2F2F2;
+}

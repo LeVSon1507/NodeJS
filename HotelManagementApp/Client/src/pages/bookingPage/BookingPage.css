@@ -145,3 +145,13 @@ label {
    margin-bottom: 3rem;
    min-height: 3rem;
 }
+
+.btnBook {
+   border: none;
+   padding: 15px 40px;
+   background-color: #0071c2;
+   color: white;
+   font-weight: bold;
+   cursor: pointer;
+   border-radius: 5px;
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.css";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -26,12 +26,15 @@ function Login() {
         }
       );
       if (response.status === 200) {
-          alert("Login successful")
-          localStorage.setItem("userEmail", response.data._doc.email);
-          localStorage.setItem("token", response.data.token);
-          navigate('/')
-         
-        }
+        alert("Login successful")
+        localStorage.setItem("user",
+          JSON.stringify({
+            userEmail: response.data._doc.email,
+            userName: response.data._doc.username
+          }));
+        localStorage.setItem("token", response.data.token);
+        navigate('/')
+      }
       console.log(response);
     } catch (error) {
       console.log(error);

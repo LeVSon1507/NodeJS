@@ -5,9 +5,9 @@ import { IRoom } from "./Room";
 
 // Define the fields of the Transaction model
 interface ITransaction extends mongoose.Document {
-  user: IUser["_id"];
+  user: string;
   hotel: IHotel["_id"];
-  room: IRoom["_id"][];
+  room: [{ idRoom: IRoom["_id"]; roomNumber: number }];
   checkIn: Date;
   dateStart: Date;
   dateEnd: Date;
@@ -18,22 +18,25 @@ interface ITransaction extends mongoose.Document {
 
 const transactionSchema = new mongoose.Schema<ITransaction>({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    type:String,
+    required: true
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Hotel",
     required: true,
   },
-  room: [
-    {
+  room: [{
+    idRoom: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room",
       required: true,
     },
-  ],
+    roomNumber: {
+      type: String,
+      required: true,
+    },
+  }],
   checkIn: {
     type: Date,
     required: true,

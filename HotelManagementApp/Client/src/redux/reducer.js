@@ -41,3 +41,29 @@ export const searchSlice = createSlice({
 export const { setLocation, setDates, setOptions, setSearchData } = searchSlice.actions;
 
 export const searchReducer = searchSlice.reducer;
+
+
+// export const authSlice = createSlice({
+//   name: 'auth',
+//   initialState: {
+//     isAuthenticated: false,
+//     user: {},
+//     token:''
+//   },
+//   reducers: {
+//     login: (state, action) => {
+//       state.isAuthenticated = true;
+//       state.user = action.payload.user;
+//       state.token = action.payload.token;
+//     },
+//     logout: (state) => {
+//       state.isAuthenticated = false;
+//       state.user = {};
+//       state.token = '';
+//     }
+//   },
+// });
+
+// export const { login,logout } = authSlice.actions;
+
+// export const authReducer = authSlice.reducer;

@@ -41,7 +41,7 @@ const iconList = [
 
 const Navbar = ({isSmall}) => {
    const token = localStorage.getItem('token');
-   const userEmail = localStorage.getItem('userEmail');
+   const userEmail = JSON.parse(localStorage.getItem('user')).userEmail || '';
    const navigate = useNavigate();
    const renderIconList = listIcon => {
       return listIcon.map(({ icon, type, active }) => (

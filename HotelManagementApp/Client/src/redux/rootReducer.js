@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { searchReducer } from "./reducer";
+import { searchReducer,authReducer } from "./reducer";
 
 export const allReducers = combineReducers({
     // add more reducers here

@@ -57,6 +57,42 @@ export const getCount = async (
   }
 };
 
+// export const searchHotel = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const { city, dateStart, dateEnd, numPeople, numRooms } = req.body;
+//     // write a function to get all hotel available in a city on a date range and number of people and number of rooms needed to book for that date range and city and return the list of hotel available in that city on that date range and number of people and number of rooms needed to book for that date range and city 
+  
+//     const hotelFilter = await Hotel.find({ city })
+//     const dayBooked = await Transaction.find({
+//       $and: [
+//         { dateStart: { $lte: dateEnd } },
+//         { dateEnd: { $gte: dateStart } },
+//       ],
+//     });
+//     const hotelBooked = dayBooked.map((item) => item.hotel);
+//     const hotelAvailable = hotelFilter.filter(
+//       (item) => !hotelBooked.includes(item._id)
+//     );
+//       // const hotelAvailable = await Hotel.find({
+//       //   $and: [
+//       //     { city },
+//       //     { rooms: { $elemMatch: { numPeople: { $gte: numPeople } } } },
+//       //     { rooms: { $elemMatch: { numRooms: { $gte: numRooms } } } },
+//       //   ],
+//       // });
+    
+
+//     res.status(200).json({ results: hotelAvailable });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
 export const searchHotel = async (
   req: Request,
   res: Response,
@@ -64,34 +100,42 @@ export const searchHotel = async (
 ) => {
   try {
     const { city, dateStart, dateEnd, numPeople, numRooms } = req.body;
-    let hotelFilter = await Hotel.find({ city }).populate({
-      path: "rooms",
-      match: {
-        maxPeople: { $gte: numPeople },
-      },
+
+    // Tìm tất cả các khách sạn trong thành phố được yêu cầu
+    const hotels = await Hotel.find({ city });
+    // Tìm tất cả các giao dịch có ngày bắt đầu hoặc kết thúc nằm trong khoảng thời gian được yêu cầu
+    const dayBooked = await Transaction.find({
+      $and: [
+        { dateStart: { $in: dateStart } },
+        { dateEnd: { $in: dateEnd } },
+      ],
     });
-    if (typeof dateStart === "string" && typeof dateEnd === "string") {
-      const hotelIds = hotelFilter
-        .map((hotel) => hotel?._id)
-        .filter((id) => id != null);
-      hotelFilter = hotelFilter.filter((hotel) =>
-        hotel.rooms.map(
-          (room: IRoom) =>
-            hotelIds.includes(room._id) &&
-            !Transaction.exists({
-              hotel: hotel._id,
-              room: room._id,
-              dateStart: { $lt: new Date(dateEnd) },
-              dateEnd: { $gt: new Date(dateStart) },
-            })
-        )
-      );
-    }
-    res.status(200).json({ results: hotelFilter });
+    console.log("🚀 ~ file: hotel.ts:113 ~ dayBooked:", dayBooked)
+    // Lọc ra danh sách các phòng của các khách sạn đã được đặt trong khoảng thời gian được yêu cầu
+    const roomBooked = dayBooked.map((item) => {
+      console.log("🚀 ~ file: hotel.ts:115 ~ roomBooked ~ item:", item)
+      return item.room
+    })
+    console.log("🚀 ~ file: hotel.ts:118 ~ roomBooked ~ roomBooked:", roomBooked)
+    // Lọc ra danh sách các khách sạn có ít nhất một phòng còn trống
+    const hotelAvailable = hotels.filter(
+      (item) => !roomBooked.includes(item._id)
+    );
+   
+
+  
+
+
+    // Trả về danh sách các khách sạn có sẵn
+    res.status(200).json({results: hotelAvailable });
   } catch (error) {
     next(error);
   }
 };
+
+
+
+
 //-----------------Get hotel detail----------------
 export const getHotelDetail = async (
   req: Request,
